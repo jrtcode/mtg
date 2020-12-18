@@ -1,1 +1,1 @@
-# mtg
+# Magic the Gathering
