@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
+import math
 import os
 import sqlite3 as sql
 
@@ -31,9 +32,24 @@ def cards_db():
         except:
             pass
 
+        # Add code to automate how much range.
+        # When webscrapping, there is a number of results that is returned from the search
+        # webscrape that result, make an int and divide the result by 20
+        # Result/20 rounded to the nearest whole
+        url = "https://scryfall.com/search?as=full&order=name&page=1&q=color%3C%3DWUBRG+legal%3Acommander&unique=cards"
+        page = requests.get(url)
+
+        soup = bs(page.content,'html.parser')
+        query_total = soup.find_all(class_='search-info')
+        for i in query_total:
+            strong = i.find('strong').text.strip()
+
+        strong = int(strong[10:].replace(',','').replace(' cards',''))
+        y = math.ceil((strong/20)+1)
+
         card_database = {}
 
-        for x in range(1,1021):
+        for x in range(1,y):
             url = "https://scryfall.com/search?as=full&order=name&page="
             page = requests.get(url+str(x)+"&q=color%3C%3DWUBRG+legal%3Acommander+lang%3Aen&unique=cards")
 
@@ -90,14 +106,14 @@ def cards_db():
                     c.execute("INSERT INTO magic_cards VALUES (?,?,?,?,?,?,?,?,?)",[magic_card['name'],magic_card['cmc'],magic_card['type_line'],magic_card['card_stats'],magic_card['text_box'],'N/B','N/B','N/B','N/B',])
                 print(name.replace('\n           ','')+' added to database.')
                 os.chdir(os.path.join(os.getcwd(),path))
-                img_file = open(name.replace(' ','-').replace(',','').replace('"','')+".jpg",'wb')
+                img_file = open(name.replace(' ','-').replace(',','').replace('"','')+".png",'wb')
                 im = requests.get(img)
                 img_file.write(im.content)
                 img_file.close()
                 print('Saving ' + name.replace('\n           ','') + ' image')
                 try:
                     if len(img_back) > 0:
-                        img_file = open(name.replace(' ','-').replace(',','').replace('"','')+"back.jpg",'wb')
+                        img_file = open(name.replace(' ','-').replace(',','').replace('"','')+"back.png",'wb')
                         im = requests.get(img_back)
                         img_file.write(im.content)
                         img_file.close()
@@ -197,14 +213,14 @@ def cards_db():
                         cur2.execute("INSERT INTO updated_magic_cards VALUES (?,?,?,?,?,?,?,?,?)",[magic_card['name'],magic_card['cmc'],magic_card['type_line'],magic_card['card_stats'],magic_card['text_box'],'N/B','N/B','N/B','N/B',])
                     print(name.replace('\n           ','')+' added to database.')
                     os.chdir(os.path.join(os.getcwd(),path))
-                    img_file = open(name.replace(' ','-').replace(',','').replace('"','')+".jpg",'wb')
+                    img_file = open(name.replace(' ','-').replace(',','').replace('"','')+".png",'wb')
                     im = requests.get(img)
                     img_file.write(im.content)
                     img_file.close()
                     print('Saving ' + name.replace('\n           ','') + ' image')
                     try:
                         if len(img_back) > 0:
-                            img_file = open(name.replace(' ','-').replace(',','').replace('"','')+"back.jpg",'wb')
+                            img_file = open(name.replace(' ','-').replace(',','').replace('"','')+"back.png",'wb')
                             im = requests.get(img_back)
                             img_file.write(im.content)
                             img_file.close()
