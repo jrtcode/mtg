@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import cv2
 import re
 
-print(os.getcwd())
+# print(os.getcwd())
 
 dir = os.listdir(os.getcwd())
 
@@ -13,11 +13,11 @@ if 'deck_build.py' in dir:
     os.chdir('..')
     os.chdir('..')
     print('found deck_build.py')
-print(dir)
+# print(dir)
 path = 'magic_cards/'
-print(os.getcwd())
+# print(os.getcwd())
 os.chdir('database/')
-print(os.getcwd(),'current')
+# print(os.getcwd(),'current')
 os.chdir(path)
 
 conn = sql.connect('mtg-cards.db')
@@ -279,14 +279,14 @@ class DeckBuild():
 
         return deck,commander
 
-    def deck_manager():
+    def deck_manager(commander):
         # print(os.getcwd())
         if os.path.basename(os.getcwd()) == 'images':
             os.chdir('..')
         building = True
         deck = []
         library = {k.lower(): v for k,v in DeckBuild.card_library().items()}
-        commander = input('What is the name of the commander in your deck? ')
+        # commander = input('What is the name of the commander in your deck? ')
 
         os.chdir('images/')
         os.chdir('..')
@@ -295,7 +295,7 @@ class DeckBuild():
         os.chdir('user_decks/')
 
 
-        conn = sql.connect(f'{commander}.db')
+        conn = sql.connect(commander)
         cur = conn.cursor()
 
         try:

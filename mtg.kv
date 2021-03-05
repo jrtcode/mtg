@@ -1,0 +1,104 @@
+WindowManager:
+    StartMenu:
+    DBMenu:
+    GameModes:
+    ChoiceDeck:
+
+<StartMenu>
+    name: "start"
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+
+        GridLayout:
+            cols:2
+
+            Label:
+                text: "Magic The Gathering"
+
+        Button:
+            text: "START"
+            font_size:40
+            size_hint: 0.3, 0.3
+            on_release:
+                app.root.current="dbmenu"
+<DBMenu>
+    name:"dbmenu"
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+
+        Button:
+            text: "Create Database"
+            font_size:40
+            size_hint: 0.7, 0.7
+            on_release:
+                app.root.pressed_create_db()
+        Button:
+            text: "Load Database"
+            font_size:40
+            size_hint: 0.7, 0.7
+            on_release:
+                app.root.pressed_load_db()
+                app.root.current = "gamemodes"
+
+
+
+        Button:
+            text: "BACK"
+            font_size:40
+            size_hint: 0.3, 0.3
+            on_release:
+                app.root.current="start"
+
+<GameModes>
+    name:"gamemodes"
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+
+        Button:
+            text: "Player vs Player"
+            font_size:40
+            size_hint: 0.3, 0.3
+            on_release:
+                app.root.current="choicedeck"
+        Button:
+            text: "Two vs Two"
+            font_size:40
+            size_hint: 0.3, 0.3
+            on_release:
+                app.root.current="choicedeckt"
+
+        Button:
+            text: "Fourway Free For All"
+            font_size:40
+            size_hint: 0.3, 0.3
+            on_release:
+                app.root.current="choicedeck"
+
+        Button:
+            text: "Deck Manager"
+            font_size:40
+            size_hint: 0.3, 0.3
+            on_release:
+                app.root.current="deckmanager"
+        Button:
+            text: "START MENU"
+            font_size:40
+            size_hint: 0.3, 0.3
+            on_release:
+                app.root.current="start"
+
+<ChoiceDeck>
+    name:"choicedeck"
+    id:choicedeck
+    GridLayout:
+        cols:1
+
+        Label:
+            text:"Choose a Deck"
+        FileChooserIconView:
+            id: deckchoosen
+            path: "./database/deck_builder/user_decks"
+            on_selection: choicedeck.selected(deckchoosen.selection)
