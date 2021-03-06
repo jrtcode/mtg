@@ -280,7 +280,7 @@ class DeckBuild():
         return deck,commander
 
     def deck_manager(commander):
-        # print(os.getcwd())
+        print(os.getcwd())
         if os.path.basename(os.getcwd()) == 'images':
             os.chdir('..')
         building = True
@@ -317,10 +317,6 @@ class DeckBuild():
             print(deck)
             for card in deck:
                 cur.execute("INSERT INTO magic_deck VALUES (?,?,?,?,?,?,?,?,?)",[card['name'],card['cmc'],card['type_line'],card['stats'],card['textbox'],card['name_back'],card['type_line_back'],card['stats_back'],card['textbox_back'],])
-                print(f"SAVED {card['name']} to database...")
-            print('DONE.')
-            print('DECK SAVED.')
-            print(f"YOU CAN LOAD IT BY TYPING IN '{commander}' INTO THE PROMPT WHEN ASKED WHO IS YOUR COMMANDER.")
         except sql.OperationalError:
             cur.execute("SELECT * FROM magic_deck")
             cards = cur.fetchall()
@@ -339,9 +335,9 @@ class DeckBuild():
                 deck.append(magic_card)
                 DeckBuild.countOccurance(deck,magic_card)
             conn.close()
-            os.remove(f'{commander}.db')
+            os.remove(commander)
             print(deck, 'After removal of database')
-            conn = sql.connect(f'{commander}.db')
+            conn = sql.connect(commander)
             cur = conn.cursor()
             cur.execute("""CREATE TABLE magic_deck(
                         card_name text,
@@ -363,12 +359,8 @@ class DeckBuild():
             print(deck)
             for card in deck:
                 cur.execute("INSERT INTO magic_deck VALUES (?,?,?,?,?,?,?,?,?)",[card['name'],card['cmc'],card['type_line'],card['stats'],card['textbox'],card['name_back'],card['type_line_back'],card['stats_back'],card['textbox_back'],])
-                print(f"SAVED {card['name']} to database...")
-            print('DONE.')
-            print('DECK SAVED.')
-            print(f'YOU CAN LOAD IT BY TYPING IN {commander} INTO THE PROMPT WHEN ASKED WHO IS YOUR COMMANDER.')
-        conn.commit()
-        conn.close()
+            conn.commit()
+            conn.close()
         return deck,commander
 
 

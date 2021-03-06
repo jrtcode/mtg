@@ -287,12 +287,16 @@ class ChoiceDeck(Screen):
     def selected(self,filename):# Menu to choose or make deck
         try:
             commander_file = os.path.basename(filename[0])
-            print(os.getcwd())
             print("Loading Deck...")
-            deck,player_commander = DeckBuild.deck_manager(commander_file)
-            player_commander = put_in_cz(deck,player_commander)
+            deck,commander = DeckBuild.deck_manager(commander_file) #not being completed for some reason
+            commander = put_in_cz(deck,commander)
+            print(player_commander)
             print("Deck Loaded.")
-            return deck,player_commander
+            os.chdir('images')
+            print(os.getcwd())
+            # Find images for cards store in folder
+            # try to create dir if it doesn't exists
+            return deck,commander
         except:
             pass
 class PvpOne(Screen):
@@ -341,7 +345,6 @@ class WindowManager(ScreenManager):
         os.chdir('database/magic_cards')
         print(os.getcwd())
         magic_lib = card_library.load_cards_db()
-        print("Pressed")
 
         return magic_lib
 
@@ -359,36 +362,6 @@ class MTGApp(App):
 
 MTGApp().run()
 
-# start_menu = {'1':"'FIRST TIME DATABASE CREATION'",'2':"'LOAD DATABASE'",'3':"'UPDATE DATABASE'"}
-# print('______START MENU______')
-# print()
-# for k,v in enumerate(start_menu):
-#     print(f"   {v} | {start_menu[v]}")
-#     print()
-# start = input('Choose a number ')
-# if start == '2':
-#     magic_lib = card_library.load_cards_db()
-# else:
-#     magic_lib = card_library.create_update_cards_db()
-# for i in range(8):
-#     print()
-# print("Library Populated")
-# print('Items in Library: ' + str(len(magic_lib)))
-game_modes = {'1':'Player vs Player','2':'Two vs Two','3':'Multi: Four Players Free For All','4':'Create Deck','q':'Quit Game'}
-print()
-print("Welcome to Magic the Gathering Online!!!")
-print()
-print()
-print('______GAME MODES______')
-print()
-print()
-
-for k,v in enumerate(game_modes):
-    print(f"  {v} | {game_modes[v]}")
-    print()
-
-print()
-print()
 select = input('What mode do you want to play? ')
 selecting = True
 while selecting:
