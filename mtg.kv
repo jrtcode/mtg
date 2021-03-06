@@ -3,6 +3,7 @@ WindowManager:
     DBMenu:
     GameModes:
     ChoiceDeck:
+    PvpOne:
 
 <StartMenu>
     name: "start"
@@ -101,4 +102,19 @@ WindowManager:
         FileChooserIconView:
             id: deckchoosen
             path: "./database/deck_builder/user_decks"
-            on_selection: choicedeck.selected(deckchoosen.selection)
+            on_selection:
+                choicedeck.selected(deckchoosen.selection)
+                app.root.current="pvpone"
+
+
+<PvpOne>
+    name:"pvpone"
+    id:PvpOne
+    GridLayout:
+        cols:1
+
+        GridLayout:
+            cols:1
+
+            Label:
+                text: "Graveyard"
